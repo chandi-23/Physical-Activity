@@ -7,7 +7,8 @@ export const LoginActionTypes = {
     SIGNUP_USER : "[User] signup a user",
     FORGOTPASSWORD_USER : "[User] forgot password",
     VERIFY_USER : "[User] verify user with uuid, security question and answer",
-    UPDATE_USER : "[User] update user details"
+    UPDATE_USER : "[User] update user details",
+    SUBSCRIBED_USER: "[User] is now subscribed"
 };
 
 const notify = () => {
@@ -167,6 +168,37 @@ export const setUserToStoreOnRefresh = (reduxUser) => {
             return false;
         }
     }
+}
+
+export const setSubscribedUser = (payload) => {
+    if(payload) {
+        toast.success('User Subscribed Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+
+    } else {
+        toast.error('User Unsubscribed Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    }
+    
+    return{
+        type: LoginActionTypes.SUBSCRIBED_USER, 
+        payload : payload
+    }
+    
 }
 
 

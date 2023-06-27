@@ -11,7 +11,7 @@ import NotificationDialog from "../../Containers/NotificationDialog/Notification
 import EventNotificationContent from "../../Containers/NotificationDialog/EventNotificationContent";
 
 const Header = (props) => {
-  const {currentUserDetails} = props;
+  const {currentUserDetails, isSubscribed} = props;
   const navigate = useNavigate();
   const [openNotif, setOpenNotif] = useState(false);
   const [userType, setUserType] = useState("")
@@ -52,7 +52,7 @@ const Header = (props) => {
               <img alt="app-logo" src={AppLogo} />
           </div>
             <nav className="header-nav"> 
-                <Typography paddingRight={2} color='secondary.light'><Link to="/">Dashboard</Link></Typography>
+                {isSubscribed && <Typography paddingRight={2} color='secondary.light'><Link to="/">Dashboard</Link></Typography>}
                 
                 {userType === "user"  && <Typography paddingRight={2} color='secondary.light'><Link to="/journal">Journal</Link></Typography>}
                 {userType !== "admin" && <Typography paddingRight={2} color='secondary.light'><Link to="/events">Events</Link></Typography>}
@@ -74,7 +74,8 @@ const Header = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-      currentUserDetails: state.Login.currentUserDetails
+      currentUserDetails: state.Login.currentUserDetails,
+      isSubscribed: state.Login.isSubscribed
   }
 }
 

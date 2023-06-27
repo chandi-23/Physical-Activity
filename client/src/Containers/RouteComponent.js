@@ -22,7 +22,7 @@ import AdminDashboard from '../components/AdminDashboard/AdminDashboard.js';
 
 //addding ProtectedRoute to enable only after login
 const RoutesComponent = (props) => {
-  const {currentUserDetails} = props
+  const {currentUserDetails, isSubscribed} = props
   const [userType, setUserType] = useState("")
   // const auth = localStorage.getItem("user");
 
@@ -64,7 +64,7 @@ const RoutesComponent = (props) => {
         {userType === "user" &&
         <>
         <Route path="/" element = {<ProtectedRoute/>}>
-          <Route path="/" element = {<Dashboard/> }/>
+          {isSubscribed ? <Route path="/" element = {<Dashboard/> }/> : <Route path="/" element = {<Journal/> }/>}
           </Route>
 
         <Route path="/journal" element = {<ProtectedRoute/>}>
@@ -99,7 +99,9 @@ const RoutesComponent = (props) => {
 }
 const mapStateToProps = (state) => {
   return {
-      currentUserDetails: state.Login.currentUserDetails
+      currentUserDetails: state.Login.currentUserDetails,
+      isSubscribed: state.Login.isSubscribed
+
   }
 }
 

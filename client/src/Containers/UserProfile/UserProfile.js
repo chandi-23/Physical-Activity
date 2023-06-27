@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import {updateUserDetails} from './../../Store/Actions/LoginAction';
+import {updateUserDetails, setSubscribedUser} from './../../Store/Actions/LoginAction';
 import 'react-toastify/dist/ReactToastify.css';
 import {Countries, Genders, feet, inches} from './Utils.js';
 import axios from "axios";
@@ -14,13 +14,16 @@ import MiniLoader from "../../components/Loader/MiniLoader";
 
 const mapStateToProps = (state) => ({
     isUserUpdated: state.Login.isUserUpdated,
-    currentUserDetails: state.Login.currentUserDetails
+    currentUserDetails: state.Login.currentUserDetails,
+    isSubscribed: state.Login.isSubscribed
 })
 
 const mapDispatchToProps = (dispatch) => {
     
     return {
-        updateUserDetails: (user) => dispatch(updateUserDetails(user, 'UserProfile'))
+        updateUserDetails: (user) => dispatch(updateUserDetails(user, 'UserProfile')),
+        subscribedUser: (isSubscribed) => dispatch(setSubscribedUser(isSubscribed))
+
     }
 }
 
@@ -238,7 +241,12 @@ class UserProfileComponent extends React.Component{
         }
     }
 
+    onClickSubscribe = () => {
+        this.props.subscribedUser(!this.props.isSubscribed)
+    }
+
     render(){
+        const {currentUserDetails} = this.props;
         
         if (this.state.userloggedIn) {
             
@@ -394,8 +402,12 @@ class UserProfileComponent extends React.Component{
                                 </div>
                                 <div className="input-holder">
                                     <input  type="file" accept="image/*" onChange={this.fileSelectedHandler.bind(this)} ref={fileInput => this.fileInput = fileInput}></input>
-                                    <button onClick={() => this.fileInput.click()}>Select Image</button>
-                                    
+                                    <button onClick={() => this.fileInput.click()}>Select Image</button><br/>
+                                    {currentUserDetails && currentUserDetails.roles && currentUserDetails.roles.length > 0 && currentUserDetails.roles[0]==="user" &&
+                    <>
+                    {!this.props.isSubscribed ? <button className="premium" onClick={this.onClickSubscribe}>Premium</button> : <button className="premium" onClick={this.onClickSubscribe}>unsubscribe me</button>}
+                    </>
+                    }
                                 </div>
                             </div>
                             <div className="empty-space">
@@ -407,6 +419,9 @@ class UserProfileComponent extends React.Component{
                         </div>
                         
                     </div>
+                    
+                    
+                    
                 </div>
             ) 
         } 
@@ -421,4 +436,5 @@ class UserProfileComponent extends React.Component{
 }
 
 const UserProfile = connect(mapStateToProps, mapDispatchToProps)(UserProfileComponent);
+
 export default UserProfile;

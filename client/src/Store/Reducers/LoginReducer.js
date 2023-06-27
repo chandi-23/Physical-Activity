@@ -11,12 +11,13 @@ const getInitialState = () => {
       forgotPasswordUserDetails : null,
       isUserPasswordUpdated : false,
       isUserUpdated : false,
+      isSubscribed: false
     };
   }
 
 const LoginReducer = (state = getInitialState(), action) => {
     const type = action.type;
-
+    console.log(action,"sdfkjsdnfkjnsk")
     switch(type){
       case LoginActionTypes.SIGNUP_USER :
         return { ...state, isUserSignedUp: action.payload.isSignedUp, signedUpUserDetails: action.payload.message}
@@ -30,6 +31,8 @@ const LoginReducer = (state = getInitialState(), action) => {
       case LoginActionTypes.UPDATE_USER :
         return { ...state, isUserUpdated: action.payload.userUpdated, currentUserDetails: action.payload.user}
 
+      case LoginActionTypes.SUBSCRIBED_USER:
+        return {...state, isSubscribed: action.payload}
       default:
         return state;
     }
