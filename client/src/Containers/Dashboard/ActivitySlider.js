@@ -8,7 +8,8 @@ import MiniLoader from "../../components/Loader/MiniLoader";
 const ActivitySlider = (props) =>{
 
     const onClick =(item)=>{
-        props.onClickItem(item);
+        return;
+        // props.onClickItem(item);
     }
     const onLeftClick =()=>{
        let container = document.getElementById('slider-div');

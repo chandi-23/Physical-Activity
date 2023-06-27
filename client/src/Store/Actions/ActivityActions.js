@@ -1,5 +1,7 @@
 import {HTTP} from '../../HTTP';
 import {showLoaderAction, hideLoaderAction} from './LoaderAction.js';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const ActivityActionTypes = {
     FETCH_ACTIVITY_STATS: 'FETCH_ACTIVITY_STATS',
@@ -74,4 +76,41 @@ export const updateActivityListComplete = (activities) =>{
         type: ActivityActionTypes.UPDATE_ACTIVITY_STATS,
         payload: activities
     }
+}
+
+export const createActivityData =(activityData)=>{
+    return async(dispatch, getState) => {
+        console.log(activityData)
+        
+        try {
+            const url = `http://localhost:9000/activityMasterData`;
+            const response = await HTTP.post(url, activityData);
+            if(response.status===200){
+                toast.success(`${activityData.name} activity has been created`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else if(response.status===500){
+                toast.error(`Your ${activityData.name} activity could not be added. Try again later`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            
+            // dispatch(fetchActivityListComplete(response.data));
+        } 
+        catch(error){
+                console.log("error in createActivityData action :"+ error);
+        }
+        }
 }

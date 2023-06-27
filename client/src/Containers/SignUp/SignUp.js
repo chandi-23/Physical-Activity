@@ -37,7 +37,8 @@ class SignUpComponent extends React.Component{
             gender : '',
             password : '',
             securityQuestion : '',
-            securityAnswer : ''
+            securityAnswer : '',
+            isAdmin: false
         }
     }
 
@@ -207,6 +208,13 @@ class SignUpComponent extends React.Component{
         let validPassword = this.validatePassword();
         let validSecurityQuestion = this.validateSecurityQuestion();
         let validAnswer = this.validateAnswer();
+        let roles = []
+
+        if(this.state.isAdmin){
+            roles.push("admin")
+        } else {
+            roles.push("user")
+        }
         
         if(validUsername && validEmail && validFirstname && validLastname && validDob &&
             validGender && validPassword && validSecurityQuestion && validAnswer){
@@ -219,9 +227,15 @@ class SignUpComponent extends React.Component{
                     gender : this.state.gender,
                     password : this.state.password,
                     securityQuestion : this.state.securityQuestion,
-                    securityAnswer : this.state.securityAnswer
+                    securityAnswer : this.state.securityAnswer,
+                    roles: roles
                 });
             }
+    }
+
+    onClickAdmin =() =>{
+        this.setState({isAdmin: !this.state.isAdmin })
+
     }
 
     render(){
@@ -339,6 +353,10 @@ class SignUpComponent extends React.Component{
                                     <h4>Already have an account? Login &nbsp;<a href="http://localhost:3000">here</a></h4>
                                 </div>
                             </div> 
+                            <div onClick={this.onClickAdmin}>
+																<label for="admin"> Are you a admin?</label>
+																<input type="checkbox" id="admin" name="is admin" value="admin"/>
+																</div>
                         </form>
                         </div>
                     </div>

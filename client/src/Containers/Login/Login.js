@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import { Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
+
 
 const mapStateToProps = (state) => ({
 		isUserLoggedIn : state.Login.isUserLoggedIn,
@@ -27,14 +29,14 @@ class LoginComponent extends React.Component{
 								username : '',
 								password : '',
 								usernameError : '',
-								passwordError : ''
+								passwordError : '',
 						}
 				}
 
 			notify(){
 				toast.success('Login Successful', {
 					position: "top-right",
-					autoClose: 5000,
+					autoClose: 2000,
 					hideProgressBar: false,
 					closeOnClick: true,
 					pauseOnHover: true,
@@ -77,10 +79,15 @@ class LoginComponent extends React.Component{
 						e.preventDefault();
 						let validUserName =   this.validateUsername();
 						let validPassword = this.validatePassword();
+						let roles = [];
+						if(this.state.isAdmin) {
+							roles = [...roles, "admin"]
+						}
 						if(validUserName && validPassword){
 								 this.props.userLogin({username: this.state.username, password : this.state.password});	
 						}  
 				}
+
 
 			render(){
 						let loginError = '';
@@ -121,6 +128,7 @@ class LoginComponent extends React.Component{
 																		<button type="submit">Login</button>
 																		{loginError && <p>{loginError}</p>}
 																</div>
+																<Link to="/">Continue as Guest User</Link>
 														</form>
 												</div>
 										</div>

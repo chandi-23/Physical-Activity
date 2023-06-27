@@ -17,12 +17,13 @@ const mapDisptchToProps = (dispatch) => {
     return {
       eventsList: state?.Events?.eventsData?._embedded,
       isLoading: state?.Loader?.showLoader,
-      currentUserDetails: state.Login.currentUserDetails
+      currentUserDetails: state.Login.currentUserDetails,
+      isUserLoggedIn : state.Login.isUserLoggedIn
     }
   }
 
 const Events = (props) => {
-  const { eventsList, isLoading, getEventBriteEvent, postInterestEvent} = props;
+  const { eventsList, isLoading, getEventBriteEvent, postInterestEvent, isUserLoggedIn} = props;
 
   useEffect(() => {
       getEventBriteEvent();
@@ -60,7 +61,7 @@ const Events = (props) => {
                 Venue : {_embedded?.venues[0]?.name}
               </a> }
             <div>
-                <button onClick={()=> saveEventData(item)} className="event-button"> Interested </button>
+                {isUserLoggedIn && <button onClick={()=> saveEventData(item)} className="event-button"> Interested </button>}
                 <button onClick={()=> window.open(url)} className="event-button"> Learn More </button>
               </div>
             </div>
